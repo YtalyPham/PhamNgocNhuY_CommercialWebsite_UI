@@ -2,15 +2,19 @@ import "./App.css";
 import React from "react";
 import { render } from "@testing-library/react";
 import Navbar from "./Component/Navbar/";
-import CarouselComponent from "./Component/Carousel";
+
 import SignUp from "./Component/SignUp";
 import SignIn from "./Component/SignIn";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Test from "./Component/Content";
 import Testasdf from "./Component/Testasdf";
-import Create from "./Component/Category/create"
+import User_ProductDetail from "./Component/Product/productdetailuser"
 import Category from "./Component/Category/index"
+import Brand from "./Component/Brand/index"
+import ProductDetail from "./Component/ProductDetail/index";
+import Testaa from "./Component/ProductDetail/test"
+import Home from "./Component/Product/index"
 class App extends React.Component {
   handleSearchKey(e) {
     console.log(e.target.value);
@@ -23,9 +27,10 @@ class App extends React.Component {
         <Switch>
           <Route exact path="/home">
             <h1>home page</h1>
+            <Home/>
           </Route>
-          <Route exact path="/carousel">
-            <CarouselComponent />
+          <Route exact path="/productdetail">
+           <User_ProductDetail/>
           </Route>
           <Route exact path="/signup">
             <SignUp />
@@ -33,15 +38,15 @@ class App extends React.Component {
           <Route exact path="/signin">
             <SignIn />
           </Route>
-          <Route exact path="/test">
-            <Test />
+          <Route exact path="/admin/brand">
+            <Brand />
           </Route>
 
-          <Route exact path="/admin/userForm">
-            <Test />
+          <Route exact path="/admin/test">
+            <Testaa />
           </Route>
-          <Route exact path="/admin/categoryForm">
-            <Create />
+          <Route exact path="/admin/productdetail">
+            <ProductDetail />
           </Route>
           <Route exact path="/admin/category">
             <Category />

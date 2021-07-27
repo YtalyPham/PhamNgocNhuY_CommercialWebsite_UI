@@ -3,7 +3,7 @@ import { get, post, del, put } from "../../httpHelper";
 import { Link } from "react-router-dom";
 import { Modal, Button, Form, Input } from "antd";
 export default () => {
-  const [categoryList, setCategoryList] = useState([]);
+  const [brandList, setBrandList] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [addMode, setAddMode] = useState(false);
 
@@ -21,10 +21,10 @@ export default () => {
     setIsModalVisible(false);
   };
 
-  const fetchCategoryList = () => {
-    get("/category")
+  const fetchBrandList = () => {
+    get("/brand")
       .then((response) => {
-        setCategoryList(response.data.data);
+        setBrandList(response.data.data);
       })
       .catch((error) => {
         console.log("error", error);
@@ -32,86 +32,90 @@ export default () => {
   };
 
   useEffect(() => {
-    fetchCategoryList();
+    fetchBrandList();
   }, []);
 
-  const handleDeleteCategory = (categoryId) => {
-    del(`/category/${categoryId}`).then((response) => {
-      const _listCategoryFilter = categoryList.filter(
-        (item) => item?.id !== categoryId
+  const handleDeleteBrand = (brandId) => {
+    del(`/brand/${brandId}`).then((response) => {
+      const _listBrandFilter = brandList.filter(
+        (item) => item?.id !== brandId
       );
-      setCategoryList(_listCategoryFilter);
+      setBrandList(_listBrandFilter);
     });
   };
-  const handleAddNewCategory = () => {
+  const handleAddNewBrand = () => {
     form.setFieldsValue({name: ''})
+    form.setFieldsValue({country: ''})
     setAddMode(true);
     setIsModalVisible(true);
   };
 
-  const handleActionButtonEdit = async (category) => {
+  const handleActionButtonEdit = async (brand) => {
     setAddMode(false);
 
     form.setFieldsValue({
-      id: category?.id,
-      name: category?.name,
+      id: brand?.id,
+      name: brand?.name,
+      country: brand?.country,
     });
     showModal();
   };
 
   const handleCallAPIUpdate = (e) => {
     console.log("e", e);
-    put(`/category`, e).then((response) => {
-      let _indexOfCategory = categoryList.findIndex(
+    put(`/brand`, e).then((response) => {
+      let _indexOfBrand = brandList.findIndex(
         (item) => item?.id === e?.id
       );
 
-      const _categorys = [
-        ...categoryList.slice(0, _indexOfCategory),
+      const _brands = [
+        ...brandList.slice(0, _indexOfBrand),
         {
-          ...categoryList[_indexOfCategory],
+          ...brandList[_indexOfBrand],
           name: e?.name,
+          country: e?.country,
         },
-        ...categoryList.slice(_indexOfCategory + 1),
+        ...brandList.slice(_indexOfBrand + 1),
       ];
-      setCategoryList(_categorys);
+      setBrandList(_brands);
       setIsModalVisible(false);
     });
   };
 
   const handleCallAPIAdd = (e) => {
-    post(`/category`, { name: e?.name}).then((response) => {
-      const _listCategory = [...categoryList, response?.data?.data];
-      setCategoryList(_listCategory);
+    post(`/brand`, { name: e?.name, country:e?.country}).then((response) => {
+      const _listBrand = [...brandList, response?.data?.data];
+      setBrandList(_listBrand);
       setIsModalVisible(false);
     });
   };
 
   return (
     <div>
-      <h3>MANAGE CATEGORY</h3>
+        <h3> MANAGE BRAND </h3>
       <table id="table">
         <thead>
           <tr>
             <th>Id</th>
             <th>Name</th>
+            <th>Country</th>
             <th>Delete</th>
             <th>Edit</th>
           </tr>
         </thead>
         <tbody>
-          {categoryList.map((category) => (
-            <tr key={category.id}>
-              <td>{category.id}</td>
-              <td>{category.name}</td>
-
+          {brandList.map((brand) => (
+            <tr key={brand.id}>
+              <td>{brand.id}</td>
+              <td>{brand.name}</td>
+              <td>{brand.country}</td>
               <td>
-                <button onClick={() => handleDeleteCategory(category.id)}>
+                <button onClick={() => handleDeleteBrand(brand.id)}>
                   Delete
                 </button>
               </td>
               <td>
-                <button onClick={() => handleActionButtonEdit(category)}>
+                <button onClick={() => handleActionButtonEdit(brand)}>
                   Edit
                 </button>
               </td>
@@ -119,8 +123,8 @@ export default () => {
           ))}
         </tbody>
       </table>
-      <h1>Add new Category</h1>
-      <button onClick={() => handleAddNewCategory()}>Add new Category</button>
+      <h1>Add new Brand</h1>
+      <button onClick={() => handleAddNewBrand()}>Add new Brand</button>
       
       <Modal
         destroyOnClose
@@ -148,7 +152,15 @@ export default () => {
           <Form.Item
             label="Name"
             name="name"
-            rules={[{ required: true, message: "Please input your username!" }]}
+            rules={[{ required: true, message: "Please input brand name!" }]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            label="Country"
+            name="country"
+            rules={[{ required: true, message: "Please input brand country!" }]}
           >
             <Input />
           </Form.Item>

@@ -3,23 +3,25 @@ import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import './signin.css';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import {post} from '../../httpHelper'
+import { useHistory } from "react-router-dom";
+
 
 const SignIn = () => {
   const onFinish = (values) => {
     console.log('Received values of form: ', values);
   };
+
+  const history = useHistory();
   
   const handleFormSubmit= (e) =>{
-      // e.preventDefault();
-    console.log('e', e);
 
       post("/api/auth/signin", {
         username: e?.username,
         password: e?.password,
       }).then((response) => {
-        localStorage.setItem("token", response?.data?.accessToken)
-        console.log(response.data);
-         console.log('login success');
+        localStorage.setItem("token", response?.data?.accessToken);
+        localStorage.setItem("roles", response?.data?.roles);
+        history.push("/home");
       }).catch(error => {
         console.log("login false");
       });

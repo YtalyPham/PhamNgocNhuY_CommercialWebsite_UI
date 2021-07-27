@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Form, Input, Cascader, Select, Row, Col, Checkbox, Button, AutoComplete } from 'antd';
+import { get, post, del, put } from "../../httpHelper";
 const { Option } = Select;
 
 const formItemLayout = {
@@ -8,7 +9,7 @@ const formItemLayout = {
       span: 24,
     },
     sm: {
-      span: 8,
+      span: 10,
     },
   },
   wrapperCol: {
@@ -66,16 +67,22 @@ const SignUp = () => {
     label: website,
     value: website,
   }));
+
+  const handleCallAPIAdd = (e) => {
+    post(`/api/auth/signup`, { username: e?.username, email:e?.email, password:e?.password
+    }).then((response) => {
+      
+       console.log(e)
+    });
+  };
+
   return (
     <Form
       {...formItemLayout}
       form={form}
       name="register"
-      onFinish={onFinish}
-      initialValues={{
-        residence: ['zhejiang', 'hangzhou', 'xihu'],
-        prefix: '86',
-      }}
+      onFinish={handleCallAPIAdd}
+       
       scrollToFirstError
     >
       <Form.Item
@@ -126,7 +133,7 @@ const SignUp = () => {
       <Form.Item
         name="confirm"
         label="Confirm Password"
-        dependencies={['password']}
+        dependencies={['password']} 
         hasFeedback
         rules={[
           {
