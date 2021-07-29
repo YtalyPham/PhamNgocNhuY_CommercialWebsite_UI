@@ -25,6 +25,7 @@ export default () => {
     get("/brand")
       .then((response) => {
         setBrandList(response.data.data);
+        console.log(response)
       })
       .catch((error) => {
         console.log("error", error);

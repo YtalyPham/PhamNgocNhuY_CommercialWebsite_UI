@@ -1,13 +1,16 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { Component, useContext, useEffect, useState } from "react";
 import { get, post, del, put } from "../../httpHelper";
 import { Link } from "react-router-dom";
 import { Button, Form } from "antd";
 import { Card, Row, Col } from "antd";
+import { GlobalContext } from '../../context';
+
 const { Meta } = Card;
 export default () => {
-  const [ProductList, setProductList] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [addMode, setAddMode] = useState(false);
+
+  const {listProduct} = useContext(GlobalContext);
 
   const [form] = Form.useForm();
 
@@ -23,26 +26,14 @@ export default () => {
     setIsModalVisible(false);
   };
 
-  useEffect(() => {
-    fetchProductList();
-  }, []);
 
-  const fetchProductList = () => {
-    get("/product")
-      .then((response) => {
-        setProductList(response.data.data);
-      })
-      .catch((error) => {
-        console.log("error", error);
-      });
-  };
 
   return (
     <div>
-      <h3> MANAGE Product </h3>
+      <h3>  Product </h3>
 
       <Row>
-        {ProductList?.map((item) => (
+        {listProduct?.map((item) => (
           <Col span={6}>
             <Card
               hoverable
@@ -56,7 +47,7 @@ export default () => {
             >
               <Meta title={item?.name} description={item?.price +' đ'} />
               <br />
-              <Link to="/productdetail">
+              <Link to={`/productdetail/${item?.id}`}>
                 <Button type="primary" size="large">
                   Detail
                 </Button>

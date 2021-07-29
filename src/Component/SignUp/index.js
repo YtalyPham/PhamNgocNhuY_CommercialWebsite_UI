@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Form, Input, Cascader, Select, Row, Col, Checkbox, Button, AutoComplete } from 'antd';
+import { Form, Input, Cascader, Select, Row, Col, Checkbox, Button, notification } from 'antd';
 import { get, post, del, put } from "../../httpHelper";
+import {  SmileOutlined } from '@ant-design/icons';
 const { Option } = Select;
 
 const formItemLayout = {
@@ -71,11 +72,29 @@ const SignUp = () => {
   const handleCallAPIAdd = (e) => {
     post(`/api/auth/signup`, { username: e?.username, email:e?.email, password:e?.password
     }).then((response) => {
-      
+        openNotification();
        console.log(e)
+    }).catch(error => {
+      openNotificationFail();
+      console.log("login false");
     });
   };
-
+  const openNotification = () => {
+    notification.open({
+      message: 'Notification Title',
+      description:
+        'Signup Success, Please login !',
+      icon: <SmileOutlined style={{ color: '#108ee9' }} />,
+    });
+  };
+  const openNotificationFail = () => {
+    notification.open({
+      message: 'Notification Title',
+      description:
+        'Signup Fail, Please try again !',
+      icon: <SmileOutlined style={{ color: '#108ee9' }} />,
+    });
+  };
   return (
     <Form
       {...formItemLayout}

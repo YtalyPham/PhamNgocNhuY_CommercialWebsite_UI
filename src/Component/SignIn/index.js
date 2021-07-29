@@ -1,8 +1,9 @@
-import { Form, Input, Button, Checkbox } from 'antd';
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { Form, Input, Button, Checkbox,notification  } from 'antd';
+import { UserOutlined, LockOutlined,SmileOutlined } from '@ant-design/icons';
 import './signin.css';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import {post} from '../../httpHelper'
+ 
 import { useHistory } from "react-router-dom";
 
 
@@ -21,13 +22,30 @@ const SignIn = () => {
       }).then((response) => {
         localStorage.setItem("token", response?.data?.accessToken);
         localStorage.setItem("roles", response?.data?.roles);
+        openNotification();
         history.push("/home");
       }).catch(error => {
+        openNotificationFail();
         console.log("login false");
       });
 
   };
-
+  const openNotification = () => {
+    notification.open({
+      message: 'Notification Title',
+      description:
+        'Login Success, Have a nice day !',
+      icon: <SmileOutlined style={{ color: '#108ee9' }} />,
+    });
+  };
+  const openNotificationFail = () => {
+    notification.open({
+      message: 'Notification Title',
+      description:
+        'Login Fail, Please try again !',
+      icon: <SmileOutlined style={{ color: '#108ee9' }} />,
+    });
+  };
   return (
     <Form 
       name="normal_login"
