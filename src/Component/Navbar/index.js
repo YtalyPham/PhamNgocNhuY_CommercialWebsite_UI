@@ -73,11 +73,11 @@ export default () => {
               </Menu.Item>
             </Link>
 
-            <Link to="/admin/productdetail">
+            {/* <Link to="/admin/productdetail">
               <Menu.Item key="app" icon={<AppstoreOutlined />}>
                 ProductDetail
               </Menu.Item>
-            </Link>
+            </Link> */}
             <Link to="/admin/brand">
               <Menu.Item key="app" icon={<AppstoreOutlined />}>
                 Brand

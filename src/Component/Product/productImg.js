@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import ImageGallery from 'react-image-gallery';
-
+import logo from '../../assets/image/Xiaomiphone.jpg';
 function ProductImage(props) {
     const [Images, setImages] = useState([])
 
@@ -10,8 +10,8 @@ function ProductImage(props) {
 
             props.detail.images && props.detail.images.map(item => {
                 images.push({
-                    original: `https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png`,
-                    thumbnail: `https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png`
+                    original: `logo`,
+                    thumbnail: `logo`
                 })
             })
             setImages(images)

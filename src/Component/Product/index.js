@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { Button, Form } from "antd";
 import { Card, Row, Col } from "antd";
 import { GlobalContext } from '../../context';
+import logo from '../../assets/image/Xiaomiphone.jpg';
 
 const { Meta } = Card;
 export default () => {
@@ -40,8 +41,7 @@ export default () => {
               style={{ width: 240 }}
               cover={
                 <img
-                  alt="example"
-                  src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"
+                  src={logo} alt="Logo"
                 />
               }
             >

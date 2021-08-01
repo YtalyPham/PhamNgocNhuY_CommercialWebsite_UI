@@ -1,7 +1,8 @@
 import React, { Component, useEffect, useState } from "react";
 import { get, post, del, put } from "../../httpHelper";
 import { Link } from "react-router-dom";
-import { Modal, Button, Form, Input } from "antd";
+import { Modal, Button, Form, Input,Popconfirm } from "antd";
+const { Search } = Input;
 export default () => {
   const [categoryList, setCategoryList] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -25,6 +26,16 @@ export default () => {
     get("/category")
       .then((response) => {
         setCategoryList(response.data.data);
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+  };
+  const fetchCategoryListByName = (e) => {
+    get(`/category/search/${e}`)
+      .then((response) => {
+        setCategoryList(response.data.data);
+        console.log(response);
       })
       .catch((error) => {
         console.log("error", error);
@@ -86,10 +97,19 @@ export default () => {
       setIsModalVisible(false);
     });
   };
-
+  const onSearch= value  => (value== "") ? fetchCategoryList(): fetchCategoryListByName(value);
   return (
     <div>
       <h3>MANAGE CATEGORY</h3>
+      <Search
+        placeholder="input search text"
+        allowClear
+        enterButton="Search"
+        size="large"
+        onSearch={onSearch}
+        onBlur
+         
+      />
       <table id="table">
         <thead>
           <tr>
@@ -100,27 +120,33 @@ export default () => {
           </tr>
         </thead>
         <tbody>
-          {categoryList.map((category) => (
+          {categoryList?.map((category) => (
             <tr key={category.id}>
               <td>{category.id}</td>
               <td>{category.name}</td>
 
               <td>
-                <button onClick={() => handleDeleteCategory(category.id)}>
+                {/* <button onClick={() => handleDeleteCategory(category.id)}>
                   Delete
-                </button>
+                </button> */}
+                <Popconfirm title="Are you sure？" okText="Yes" cancelText="No" onConfirm={() => handleDeleteCategory(category.id)}>
+                  <Button danger type="primary" >Delete</Button>
+                </Popconfirm>
               </td>
               <td>
-                <button onClick={() => handleActionButtonEdit(category)}>
+                {/* <button onClick={() => handleActionButtonEdit(category)}>
                   Edit
-                </button>
+                </button> */}
+                <Button type="primary"  onClick={() => handleActionButtonEdit(category)}>
+                  Edit
+                </Button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
       <h1>Add new Category</h1>
-      <button onClick={() => handleAddNewCategory()}>Add new Category</button>
+      <Button type="primary" htmlType="submit" width='200' onClick={() => handleAddNewCategory()}>Add new Category</Button>
       
       <Modal
         destroyOnClose
@@ -128,6 +154,7 @@ export default () => {
         onOk={handleOk}
         footer={false}
         visible={isModalVisible}
+        
       >
         <Form
           form={form}
@@ -148,7 +175,15 @@ export default () => {
           <Form.Item
             label="Name"
             name="name"
-            rules={[{ required: true, message: "Please input your username!" }]}
+            rules={[
+              { 
+                pattern: /^[-:'"";\\/\\.\\,\\(\\)\\>\\<\\{\\}\\+\\=\\|\\?a-zA-z0-9 _ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]+$/g,
+                message: "Not contain special character, Except UTF-8 !" },
+                {
+                  required: true,
+                  message:"Please input Category name"
+                }
+            ]}
           >
             <Input />
           </Form.Item>

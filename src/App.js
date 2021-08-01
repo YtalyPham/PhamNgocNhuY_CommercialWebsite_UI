@@ -10,7 +10,7 @@ import User_ProductDetail from "./Component/Product/productdetailuser";
 import Category from "./Component/Category/index";
 import Brand from "./Component/Brand/index";
 import ProductDetail from "./Component/ProductDetail/index";
-
+import Testa from './Component/Brand/testTable';
 import Home from "./Component/Product/index";
 import Product from "./Component/Product/productadmin";
 class App extends React.Component {
@@ -43,13 +43,17 @@ class App extends React.Component {
             <Product />
           </Route>
 
-          <Route exact path="/admin/productdetail">
+          {/* <Route exact path="/admin/productdetail">
             <ProductDetail />
-          </Route>
+          </Route> */}
 
           <Route exact path="/admin/category">
             <Category />
           </Route>
+
+          {/* <Route exact path="/admin/testTable">
+            <Testa />
+          </Route> */}
 
         </Switch>
       </Router>
